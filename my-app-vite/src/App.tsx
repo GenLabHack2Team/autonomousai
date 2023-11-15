@@ -1,16 +1,23 @@
-import { vision, speech } from '@/lib/openai'
-import { WebcamCapture } from '@/components/webcam-capture'
-import { useCallback } from 'react'
-import { playAudio } from '@/lib/audio'
+import { useAppContext } from "./context/appContext"
+import CameraPage from "./pages/CameraPage";
+import KeyPage from "./pages/KeyPage"
+import TranslatePage from "./pages/TranslatePage";
+
 
 function App() {
-    const handleScreenShot = useCallback(async (base64Image: string) => {
-        const content = await vision(base64Image)
-        if (content == null) return;
-        const mp3 = await speech(content)
-        playAudio(mp3)
-    }, [])
-    return <WebcamCapture onScreenShot={handleScreenShot} />
+    const { page } = useAppContext();
+    return (
+        <>
+            {page === 0 ?
+                <KeyPage />
+                : page === 1 ?
+                    <CameraPage />
+                    : page === 2 ?
+                        <TranslatePage />
+                        : <></>
+            }
+        </>
+    )
 }
 
 export default App

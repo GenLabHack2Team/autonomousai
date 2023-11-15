@@ -1,0 +1,86 @@
+import { Button } from '@/components/ui/button';
+import { CameraIcon } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+
+const CameraComponent: React.FC = () => {
+    const videoRef = useRef<HTMLVideoElement>(null);
+    const mediaStreamRef = useRef<MediaStream | null>(null);
+    const [isRecording, setIsRecording] = useState(false);
+    const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
+    let pressTimer: ReturnType<typeof setTimeout>;
+
+    useEffect(() => {
+        // Request access to the camera
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                mediaStreamRef.current = stream;
+                if (videoRef.current) {
+                    videoRef.current.srcObject = stream;
+                }
+            })
+            .catch(console.error);
+
+        return () => {
+            // Clean up
+            mediaStreamRef.current?.getTracks().forEach(track => track.stop());
+        };
+    }, []);
+
+    const handleButtonDown = () => {
+        // Prepare to start recording or take photo
+        pressTimer = setTimeout(() => {
+            if (mediaStreamRef.current) {
+                const recorder = new MediaRecorder(mediaStreamRef.current);
+                setMediaRecorder(recorder);
+                recorder.start();
+                setIsRecording(true);
+                recorder.ondataavailable = (event) => {
+                    if (event.data && event.data.size > 0) {
+                        console.log(event.data); // Video data
+                    }
+                };
+            }
+        }, 200); // Long press detection threshold
+    };
+
+    const handleButtonUp = () => {
+        clearTimeout(pressTimer); // Cancel the timer
+        if (isRecording) {
+            mediaRecorder?.stop();
+            setIsRecording(false);
+        } else {
+            // Take a photo
+            if (videoRef.current) {
+                const canvas = document.createElement('canvas');
+                canvas.width = videoRef.current.videoWidth;
+                canvas.height = videoRef.current.videoHeight;
+                const ctx = canvas.getContext('2d');
+                if (ctx) {
+                    ctx.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+                    canvas.toBlob(blob => {
+                        console.log(blob); // Blob of the photo
+                    });
+                }
+            }
+        }
+    };
+
+    return (
+        <div className='h-screen'>
+            <video ref={videoRef} autoPlay muted className='w-full h-[100dvh]' />
+            <div className='absolute bottom-10 w-full flex justify-center'>
+                <Button
+                    onMouseDown={handleButtonDown}
+                    onMouseUp={handleButtonUp}
+                    onTouchStart={handleButtonDown}
+                    onTouchEnd={handleButtonUp}
+                    variant="default"
+                >
+                    {isRecording ? 'Recording...' : <CameraIcon />}
+                </Button>
+            </div>
+        </div>
+    );
+};
+
+export default CameraComponent;
