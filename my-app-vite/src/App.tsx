@@ -3,7 +3,6 @@ import CameraPage from "./pages/CameraPage";
 import KeyPage from "./pages/KeyPage"
 import TranslatePage from "./pages/TranslatePage";
 
-
 function App() {
     const { page } = useAppContext();
     return (

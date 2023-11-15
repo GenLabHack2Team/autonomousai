@@ -1,6 +1,9 @@
 import { Button } from '@/components/ui/button';
 import { CameraIcon } from 'lucide-react';
 import React, { useState, useRef, useEffect } from 'react';
+import { vision, speech } from '@/lib/openai'
+import { playAudio } from '@/lib/audio'
+import { blobToBase64 } from '@/lib/utils';
 
 const CameraComponent: React.FC = () => {
     const videoRef = useRef<HTMLVideoElement>(null);
@@ -57,8 +60,14 @@ const CameraComponent: React.FC = () => {
                 const ctx = canvas.getContext('2d');
                 if (ctx) {
                     ctx.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
-                    canvas.toBlob(blob => {
-                        console.log(blob); // Blob of the photo
+                    canvas.toBlob(async (blob) => {
+                        console.log(blob);
+                        if (blob == null) return;
+                        const base64Image = await blobToBase64(blob)
+                        const content = await vision(base64Image)
+                        if (content == null) return;
+                        const mp3 = await speech(content)
+                        playAudio(mp3)
                     });
                 }
             }
