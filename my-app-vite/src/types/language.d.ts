@@ -1,1 +1,1 @@
-type Language = "" | "english" | "spanish" | "japanese";
+type Language = "english" | "spanish" | "japanese";

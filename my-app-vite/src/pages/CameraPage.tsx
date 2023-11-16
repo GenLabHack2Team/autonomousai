@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useOpenAI } from '@/hooks/useOpenAI';
 import { playAudio } from '@/lib/utils'
 import { blobToBase64 } from '@/lib/utils';
-import { useAppContext } from '@/context/appContext';
+import { SettingsSheet } from '@/components/settings-sheet';
 
 const CameraComponent: React.FC = () => {
     const videoRef = useRef<HTMLVideoElement>(null);
@@ -12,8 +12,7 @@ const CameraComponent: React.FC = () => {
     const [isRecording, setIsRecording] = useState(false);
     const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
     let pressTimer: ReturnType<typeof setTimeout>;
-    const { selectedLanguage } = useAppContext()
-    const { vision, speech } = useOpenAI({ language: selectedLanguage })
+    const { vision, speech } = useOpenAI()
 
     useEffect(() => {
         // Request access to the camera
@@ -79,7 +78,8 @@ const CameraComponent: React.FC = () => {
 
     return (
         <div className='h-screen'>
-            <video ref={videoRef} autoPlay muted className='w-full h-[100dvh]' />
+            <SettingsSheet />
+            <video ref={videoRef} autoPlay muted className='w-full h-[100dvh] pointer-events-none' />
             <div className='absolute bottom-10 w-full flex justify-center'>
                 <Button
                     onMouseDown={handleButtonDown}
