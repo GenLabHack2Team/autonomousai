@@ -1,5 +1,5 @@
 import { LanguageSelector } from "@/components/selectors/language-selector"
-import { ModeSelector } from "@/components/mode-selector"
+import { ModeSelector } from "@/components/selectors/mode-selector"
 import { KeyForm } from "@/components/forms/key-form"
 
 

@@ -10,6 +10,7 @@ import {
 import { Settings } from "lucide-react"
 import { LanguageSelector } from "./selectors/language-selector"
 import { TeacherSelector } from "./selectors/teacher-selector"
+import { ModeSelector } from "@/components/selectors/mode-selector"
 
 const SettingsSheet = () => {
     return (
@@ -26,6 +27,8 @@ const SettingsSheet = () => {
                 </SheetHeader>
                 <div className="text-sm font-medium leading-none mb-3 mt-4">Language</div>
                 <LanguageSelector className="w-full" />
+                <div className="text-sm font-medium leading-none mb-3 mt-4">Mode</div>
+                <ModeSelector className="w-full" />
                 <div className="text-sm font-medium leading-none mb-3 mt-4">Teacher</div>
                 <TeacherSelector className="w-full" />
             </SheetContent>
