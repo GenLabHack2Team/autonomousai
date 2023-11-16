@@ -51,7 +51,7 @@ const CameraComponent: React.FC = () => {
         <div className='h-[100dvh] overflow-y-hidden'>
             <SettingsSheet />
             <Button className='absolute top-4 left-4 z-10 sm:hidden inline-flex' onClick={switchCamera} variant='outline' size='icon'><SwitchCamera className='w-4 h-4' /></Button>
-            {!isNormal && <Subtitles className={'text-white absolute py-8 px-4 mt-20 pointer-events-none backdrop-blur-md rounded m-4'} text={content} />}
+            {!isNormal && <Subtitles className={'text-white absolute z-[100] py-8 px-4 mt-20 pointer-events-none backdrop-blur-md rounded m-4'} text={content} />}
             <video ref={videoRef} muted className='w-full h-full' controls={false} onClick={() => {
                 if (!isNormal) {
                     setIsNormal(true)
@@ -62,7 +62,7 @@ const CameraComponent: React.FC = () => {
                 <Button
                     onClick={handleClick}
                     variant={"secondary"}
-                    className='w-[200px]'
+                    className='w-[200px] z-50'
                     disabled={isProcessing}
                 >
                     {isProcessing ? 'Processing...' : <CameraIcon />}

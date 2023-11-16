@@ -1,6 +1,7 @@
 import { useOpenAI } from '@/hooks/useOpenAI'
 import { useEffect, useState, memo } from 'react'
 import { Separator } from '@/components/ui/separator'
+import { ScrollArea } from '@/components/ui/scroll-area'
 
 type Word = {
     type: 'word' | 'phrase'
@@ -31,14 +32,16 @@ const Subtitles = memo(({ className, text }: SubtitlesProps) => {
 
     console.log(words)
 
-    return <div className={className}>
-        {text}
-        <Separator className='my-4' />
-        {words.map(({ type, value }) => {
-            return <div key={value}>
-                {type}: {value}
-            </div>
-        })}
+    return <div className={className} >
+        <div className='max-h-full overflow-y-scroll' >
+            {text}
+            <Separator className='my-4' />
+            {words.map(({ type, value }) => {
+                return <div key={value}>
+                    {type}: {value}
+                </div>
+            })}
+        </div>
         <div className='p-8 mt-8 rounded bg-slate-100 text-xl font-bold text-center text-primary'>Back to camera.</div>
     </div>
 })
