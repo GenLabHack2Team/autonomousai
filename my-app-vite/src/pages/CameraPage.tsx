@@ -86,7 +86,7 @@ const CameraComponent: React.FC = () => {
         <div className='h-screen overflow-y-hidden'>
             <SettingsSheet />
             <Subtitles className='absolute p-8 pointer-events-none' text={content} />
-            <video ref={videoRef} muted className='w-full h-full pointer-events-none' style={{ objectFit: 'cover' }} />
+            <video ref={videoRef} muted className='w-full h-full pointer-events-none' playsInline style={{ objectFit: 'cover' }} />
             <div className='absolute bottom-10 w-full flex justify-center'>
                 <Button
                     onMouseDown={handleButtonDown}
