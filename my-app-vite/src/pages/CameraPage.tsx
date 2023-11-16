@@ -46,7 +46,7 @@ const CameraComponent: React.FC = () => {
     }
 
     return (
-        <div className='h-screen overflow-y-hidden'>
+        <div className='h-[100dvh] overflow-y-hidden'>
             <SettingsSheet />
             <Subtitles className='absolute p-8 pointer-events-none' text={content} />
             <video ref={videoRef} muted className='w-full h-full' controls={false} playsInline style={{ objectFit: 'cover' }} />
