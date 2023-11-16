@@ -7,6 +7,8 @@ interface Value {
     setPage: React.Dispatch<React.SetStateAction<number>>
     selectedLanguage: Language,
     setLanguage: React.Dispatch<React.SetStateAction<Language>>
+    selectedMode: Mode,
+    setSelectedMode: React.Dispatch<React.SetStateAction<Mode>>
     selectedTeacher: Teacher,
     setTeacher: React.Dispatch<React.SetStateAction<Teacher>>
 }
@@ -16,6 +18,7 @@ const AppContext = createContext<Value | null>(null);
 export const ContextProvider = ({ children }: { children: React.ReactNode }) => {
     const [page, setPage] = useState<number>(0);
     const [apiKey, setApiKey] = useState<string>("");
+    const [selectedMode, setSelectedMode] = useState<Mode>('long')
     const [selectedLanguage, setLanguage] = useState<Language>('english')
     const [selectedTeacher, setTeacher] = useState<Teacher>('casual-neutral')
 
@@ -25,6 +28,8 @@ export const ContextProvider = ({ children }: { children: React.ReactNode }) => 
         page,
         setPage,
         selectedLanguage,
+        selectedMode,
+        setSelectedMode,
         setLanguage,
         selectedTeacher,
         setTeacher

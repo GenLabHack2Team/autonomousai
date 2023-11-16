@@ -12,6 +12,7 @@ const CameraComponent: React.FC = () => {
     const [isRecording, setIsRecording] = useState(false);
     const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
     let pressTimer: ReturnType<typeof setTimeout>;
+
     const { vision, speech } = useOpenAI()
 
     useEffect(() => {
@@ -77,21 +78,22 @@ const CameraComponent: React.FC = () => {
     };
 
     return (
-        <div className='h-screen'>
+        <div className='h-screen overflow-y-hidden'>
             <SettingsSheet />
-            <video ref={videoRef} autoPlay muted className='w-full h-[100dvh] pointer-events-none' />
+            <video ref={videoRef} autoPlay muted className='w-full h-full pointer-events-none' style={{ objectFit: 'cover' }} />
             <div className='absolute bottom-10 w-full flex justify-center'>
                 <Button
                     onMouseDown={handleButtonDown}
                     onMouseUp={handleButtonUp}
                     onTouchStart={handleButtonDown}
                     onTouchEnd={handleButtonUp}
-                    variant="default"
+                    variant={"secondary"}
+                    className='w-[200px]'
                 >
                     {isRecording ? 'Recording...' : <CameraIcon />}
                 </Button>
             </div>
-        </div>
+        </div >
     );
 };
 

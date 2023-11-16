@@ -19,7 +19,7 @@ const createCharatorPrompt = (language: Language, teacher: Teacher) => {
 }
 
 const useOpenAI = () => {
-    const { apiKey, selectedLanguage, selectedTeacher } = useAppContext()
+    const { apiKey, selectedLanguage, selectedTeacher, selectedMode } = useAppContext()
     const openaiRef = useRef<OpenAI>(new OpenAI({
         apiKey: apiKey,
         dangerouslyAllowBrowser: true,
@@ -51,7 +51,7 @@ const useOpenAI = () => {
                 },
                 {
                     role: "system", // https://community.openai.com/t/the-system-role-how-it-influences-the-chat-behavior/87353/8
-                    content: basePrompts[selectedLanguage] + createCharatorPrompt(selectedLanguage, selectedTeacher)
+                    content: basePrompts[selectedMode ?? 'long'][selectedLanguage] + createCharatorPrompt(selectedLanguage, selectedTeacher)
                 },
             ],
         });
