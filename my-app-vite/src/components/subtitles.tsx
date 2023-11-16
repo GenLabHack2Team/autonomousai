@@ -1,5 +1,5 @@
 import { useOpenAI } from '@/hooks/useOpenAI'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, memo } from 'react'
 import { Separator } from '@/components/ui/separator'
 
 type Word = {
@@ -12,7 +12,7 @@ type SubtitlesProps = {
     text: string
 }
 
-const Subtitles = ({ className, text }: SubtitlesProps) => {
+const Subtitles = memo(({ className, text }: SubtitlesProps) => {
     const [words, setWords] = useState<Word[]>([])
     const { extract } = useOpenAI()
 
@@ -40,6 +40,6 @@ const Subtitles = ({ className, text }: SubtitlesProps) => {
             </div>
         })}
     </div>
-}
+})
 
 export { Subtitles }

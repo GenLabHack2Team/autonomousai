@@ -16,7 +16,7 @@ const SettingsSheet = () => {
     return (
         <Sheet>
             <SheetTrigger asChild>
-                <Button className="absolute top-4 right-4" variant="outline" size="icon"><Settings className="w-4 h-4" /></Button>
+                <Button className="absolute top-4 right-4 z-10" variant="outline" size="icon"><Settings className="w-4 h-4" /></Button>
             </SheetTrigger>
             <SheetContent>
                 <SheetHeader>

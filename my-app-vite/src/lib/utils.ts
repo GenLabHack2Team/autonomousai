@@ -29,3 +29,11 @@ export async function playAudio(arrayBuffer: ArrayBuffer) {
   source.connect(audioContext.destination);
   source.start(0);
 }
+
+export async function getCameraStream(cameraId?: string) {
+  const constraints = {
+    video: cameraId ? { deviceId: { exact: cameraId } } : true,
+  };
+
+  return navigator.mediaDevices.getUserMedia(constraints);
+}
