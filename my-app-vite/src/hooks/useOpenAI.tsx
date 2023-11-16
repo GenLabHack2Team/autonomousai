@@ -3,6 +3,7 @@ import { useAppContext } from "@/context/appContext";
 import { useRef, useEffect } from "react";
 import basePrompts from '@/lib/base-prompts.json'
 import charactorPrompts from '@/lib/charactor-prompts.json'
+import wordsPrompts from '@/lib/words-prompts.json'
 
 const voices: { [key: string]: 'alloy' | 'echo' | 'fable' | 'onyx' | 'nova' | 'shimmer' } = {
     "casual-neutral": 'fable',
@@ -58,6 +59,27 @@ const useOpenAI = () => {
         return response.choices[0].message.content;
     }
 
+    async function extract(text: string) {
+        const response = await openaiRef.current.chat.completions.create({
+            model: "gpt-4-1106-preview",
+            max_tokens: 512,
+            response_format: { type: "json_object" },
+            messages: [
+                {
+                    role: "user",
+                    content: [
+                        { type: "text", "text": text }
+                    ],
+                },
+                {
+                    role: "system", // https://community.openai.com/t/the-system-role-how-it-influences-the-chat-behavior/87353/8
+                    content: wordsPrompts[selectedLanguage]
+                },
+            ],
+        });
+        return response.choices[0].message.content;
+    }
+
     async function speech(text: string) {
         const mp3 = await openaiRef.current.audio.speech.create({
             model: "tts-1",
@@ -68,7 +90,7 @@ const useOpenAI = () => {
         return buffer;
     }
 
-    return { vision, speech }
+    return { vision, speech, extract }
 }
 
 export { useOpenAI }

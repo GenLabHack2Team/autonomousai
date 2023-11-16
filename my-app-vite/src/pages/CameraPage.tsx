@@ -5,12 +5,14 @@ import { useOpenAI } from '@/hooks/useOpenAI';
 import { playAudio } from '@/lib/utils'
 import { blobToBase64 } from '@/lib/utils';
 import { SettingsSheet } from '@/components/settings-sheet';
+import { Subtitles } from '@/components/subtitles';
 
 const CameraComponent: React.FC = () => {
     const videoRef = useRef<HTMLVideoElement>(null);
     const mediaStreamRef = useRef<MediaStream | null>(null);
     const [isRecording, setIsRecording] = useState(false);
     const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
+    const [content, setContent] = useState('')
     let pressTimer: ReturnType<typeof setTimeout>;
     const { vision, speech } = useOpenAI()
 
@@ -68,6 +70,7 @@ const CameraComponent: React.FC = () => {
                         const base64Image = await blobToBase64(blob)
                         const content = await vision(base64Image)
                         if (content == null) return;
+                        setContent(content)
                         const mp3 = await speech(content)
                         playAudio(mp3)
                     });
@@ -79,6 +82,7 @@ const CameraComponent: React.FC = () => {
     return (
         <div className='h-screen'>
             <SettingsSheet />
+            <Subtitles className='absolute pointer-events-none px-8 py-32' text={content} />
             <video ref={videoRef} autoPlay muted className='w-full h-[100dvh] pointer-events-none' />
             <div className='absolute bottom-10 w-full flex justify-center'>
                 <Button
