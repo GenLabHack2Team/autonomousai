@@ -1,7 +1,6 @@
 import { useOpenAI } from '@/hooks/useOpenAI'
 import { useEffect, useState, memo } from 'react'
 import { Separator } from '@/components/ui/separator'
-import { ScrollArea } from '@/components/ui/scroll-area'
 
 type Word = {
     type: 'word' | 'phrase'
