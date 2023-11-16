@@ -1,12 +1,10 @@
 import * as React from "react"
-import { Check, Languages } from "lucide-react"
+import { Check, User } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
     Command,
-    CommandEmpty,
     CommandGroup,
-    CommandInput,
     CommandItem,
 } from "@/components/ui/command"
 import {
@@ -16,27 +14,35 @@ import {
 } from "@/components/ui/popover"
 import { useAppContext } from "@/context/appContext"
 
-const languages: Array<{
-    value: Language,
-    label: string
+const teachers: Array<{
+    value: string,
+    label: string,
 }> = [
         {
-            value: "english",
-            label: "English",
+            value: "casual-neutral",
+            label: "Casual",
         },
         {
-            value: "spanish",
-            label: "Español",
+            value: "casual-male",
+            label: "Casual Male",
         },
         {
-            value: "japanese",
-            label: "日本語",
+            value: "casual-female",
+            label: "Casual Female",
+        },
+        {
+            value: "formal",
+            label: "Formal",
         },
     ]
 
-const LanguageSelector = () => {
+type TeacherSelectorProps = {
+    className?: string
+}
+
+const TeacherSelector = ({ className }: TeacherSelectorProps) => {
     const [open, setOpen] = React.useState(false)
-    const { selectedLanguage, setSelectedLanguage } = useAppContext()
+    const { selectedTeacher, setTeacher } = useAppContext()
 
     return (
         <Popover open={open} onOpenChange={setOpen}>
@@ -45,35 +51,33 @@ const LanguageSelector = () => {
                     variant="outline"
                     role="combobox"
                     aria-expanded={open}
-                    className="w-[200px] justify-between"
+                    className={className}
                 >
-                    {selectedLanguage
-                        ? languages.find((language) => language.value === selectedLanguage)?.label
-                        : "Select language..."}
-                    <Languages className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    {selectedTeacher
+                        ? teachers.find((teacher) => teacher.value === selectedTeacher)?.label
+                        : "Select teacher..."}
+                    <User className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-[200px] p-0">
+            <PopoverContent className="p-0" sideOffset={5}>
                 <Command>
-                    <CommandInput placeholder="Search language..." />
-                    <CommandEmpty>No framework found.</CommandEmpty>
                     <CommandGroup>
-                        {languages.map((language) => (
+                        {teachers.map((teacher) => (
                             <CommandItem
-                                key={language.value}
-                                value={language.value}
+                                key={teacher.value}
+                                value={teacher.value}
                                 onSelect={(currentValue) => {
-                                    setSelectedLanguage(currentValue === selectedLanguage ? "" : currentValue as Language)
+                                    setTeacher(currentValue as Teacher)
                                     setOpen(false)
                                 }}
                             >
                                 <Check
                                     className={cn(
                                         "mr-2 h-4 w-4",
-                                        selectedLanguage === language.value ? "opacity-100" : "opacity-0"
+                                        selectedTeacher === teacher.value ? "opacity-100" : "opacity-0"
                                     )}
                                 />
-                                {language.label}
+                                {teacher.label}
                             </CommandItem>
                         ))}
                     </CommandGroup>
@@ -83,4 +87,4 @@ const LanguageSelector = () => {
     )
 }
 
-export { LanguageSelector }
+export { TeacherSelector }

@@ -1,15 +1,16 @@
 import { createContext, useContext, useState } from "react";
 
-
 interface Value {
     apiKey: string
     setApiKey: React.Dispatch<React.SetStateAction<string>>
     page: number
     setPage: React.Dispatch<React.SetStateAction<number>>
     selectedLanguage: Language,
-    setSelectedLanguage: React.Dispatch<React.SetStateAction<Language>>
+    setLanguage: React.Dispatch<React.SetStateAction<Language>>
     selectedMode: Mode,
     setSelectedMode: React.Dispatch<React.SetStateAction<Mode>>
+    selectedTeacher: Teacher,
+    setTeacher: React.Dispatch<React.SetStateAction<Teacher>>
 }
 
 const AppContext = createContext<Value | null>(null);
@@ -17,8 +18,9 @@ const AppContext = createContext<Value | null>(null);
 export const ContextProvider = ({ children }: { children: React.ReactNode }) => {
     const [page, setPage] = useState<number>(0);
     const [apiKey, setApiKey] = useState<string>("");
-    const [selectedLanguage, setSelectedLanguage] = useState<Language>('english')
     const [selectedMode, setSelectedMode] = useState<Mode>('long')
+    const [selectedLanguage, setLanguage] = useState<Language>('english')
+    const [selectedTeacher, setTeacher] = useState<Teacher>('casual-neutral')
 
     const value = {
         apiKey,
@@ -26,9 +28,11 @@ export const ContextProvider = ({ children }: { children: React.ReactNode }) => 
         page,
         setPage,
         selectedLanguage,
-        setSelectedLanguage,
         selectedMode,
-        setSelectedMode
+        setSelectedMode,
+        setLanguage,
+        selectedTeacher,
+        setTeacher
     }
 
     return (

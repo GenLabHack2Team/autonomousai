@@ -1,15 +1,25 @@
 import OpenAI from "openai";
 import { useAppContext } from "@/context/appContext";
 import { useRef, useEffect } from "react";
-import prompts from '@/lib/prompts.json'
+import basePrompts from '@/lib/base-prompts.json'
+import charactorPrompts from '@/lib/charactor-prompts.json'
 
-type UseOpenAIProps = {
-    language: Language
-    mode: Mode
+const voices: { [key: string]: 'alloy' | 'echo' | 'fable' | 'onyx' | 'nova' | 'shimmer' } = {
+    "casual-neutral": 'fable',
+    "casual-male": 'echo',
+    "casual-female": 'nova',
+    "formal": 'shimmer'
 }
 
-const useOpenAI = ({ language, mode }: UseOpenAIProps) => {
-    const { apiKey } = useAppContext()
+const createCharatorPrompt = (language: Language, teacher: Teacher) => {
+    if (teacher.startsWith('casual')) {
+        return charactorPrompts[language].casual
+    }
+    return ''
+}
+
+const useOpenAI = () => {
+    const { apiKey, selectedLanguage, selectedTeacher, selectedMode } = useAppContext()
     const openaiRef = useRef<OpenAI>(new OpenAI({
         apiKey: apiKey,
         dangerouslyAllowBrowser: true,
@@ -23,9 +33,6 @@ const useOpenAI = ({ language, mode }: UseOpenAIProps) => {
     }, [apiKey]);
 
     async function vision(base64Image: string) {
-        if (language === "") {
-            throw new Error('Language is not selected.')
-        };
         const response = await openaiRef.current.chat.completions.create({
             model: "gpt-4-vision-preview",
             max_tokens: 1024,
@@ -44,7 +51,7 @@ const useOpenAI = ({ language, mode }: UseOpenAIProps) => {
                 },
                 {
                     role: "system", // https://community.openai.com/t/the-system-role-how-it-influences-the-chat-behavior/87353/8
-                    content: prompts[mode ?? 'long'][language]
+                    content: basePrompts[selectedMode ?? 'long'][selectedLanguage] + createCharatorPrompt(selectedLanguage, selectedTeacher)
                 },
             ],
         });
@@ -54,7 +61,7 @@ const useOpenAI = ({ language, mode }: UseOpenAIProps) => {
     async function speech(text: string) {
         const mp3 = await openaiRef.current.audio.speech.create({
             model: "tts-1",
-            voice: "alloy",
+            voice: voices[selectedTeacher],
             input: text,
         });
         const buffer = await mp3.arrayBuffer();
