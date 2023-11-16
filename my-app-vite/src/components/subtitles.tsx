@@ -35,7 +35,7 @@ const Subtitles = memo(({ className, text }: SubtitlesProps) => {
         {text}
         <Separator />
         {words.map(({ type, value }) => {
-            return <div>
+            return <div key={value}>
                 {type}: {value}
             </div>
         })}

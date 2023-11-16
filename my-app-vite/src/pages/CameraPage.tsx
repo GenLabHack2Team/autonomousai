@@ -7,15 +7,15 @@ import { SettingsSheet } from '@/components/settings-sheet';
 import { Subtitles } from '@/components/subtitles';
 import { useCamera } from '@/hooks/useCamera';
 import { useDoubleTap } from '@/hooks/useDoubleTap';
+import { CameraIcon } from 'lucide-react';
 
 const CameraComponent: React.FC = () => {
     const videoRef = useRef<HTMLVideoElement>(null);
-
     const [content, setContent] = useState('')
     const { switchCamera } = useCamera(videoRef)
     useDoubleTap(videoRef, switchCamera)
-
     const { vision, speech } = useOpenAI()
+    const [isProcessing, setIsProcessing] = useState(false)
 
     const handleClick = () => {
         if (videoRef.current) {
@@ -26,14 +26,20 @@ const CameraComponent: React.FC = () => {
             if (ctx) {
                 ctx.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
                 canvas.toBlob(async (blob) => {
-                    console.log(blob);
-                    if (blob == null) return;
-                    const base64Image = await blobToBase64(blob)
-                    const content = await vision(base64Image)
-                    if (content == null) return;
-                    setContent(content)
-                    const mp3 = await speech(content)
-                    playAudio(mp3)
+                    try {
+                        setIsProcessing(true)
+                        if (blob == null) return;
+                        const base64Image = await blobToBase64(blob)
+                        const content = await vision(base64Image)
+                        if (content == null) return;
+                        setContent(content)
+                        const mp3 = await speech(content)
+                        await playAudio(mp3)
+                    } catch (error) {
+                        console.error(error)
+                    } finally {
+                        setIsProcessing(false)
+                    }
                 });
             }
         }
@@ -49,7 +55,9 @@ const CameraComponent: React.FC = () => {
                     onClick={handleClick}
                     variant={"secondary"}
                     className='w-[200px]'
+                    disabled={isProcessing}
                 >
+                    {isProcessing ? 'Processing...' : <CameraIcon />}
                 </Button>
             </div>
         </div >
