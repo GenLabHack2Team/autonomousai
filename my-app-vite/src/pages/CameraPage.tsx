@@ -7,7 +7,7 @@ import { SettingsSheet } from '@/components/settings-sheet';
 import { Subtitles } from '@/components/subtitles';
 import { useCamera } from '@/hooks/useCamera';
 import { useDoubleTap } from '@/hooks/useDoubleTap';
-import { CameraIcon } from 'lucide-react';
+import { CameraIcon, SwitchCamera } from 'lucide-react';
 
 const CameraComponent: React.FC = () => {
     const videoRef = useRef<HTMLVideoElement>(null);
@@ -48,6 +48,7 @@ const CameraComponent: React.FC = () => {
     return (
         <div className='h-[100dvh] overflow-y-hidden'>
             <SettingsSheet />
+            <Button className='absolute top-4 left-4 z-10 sm:hidden inline-flex' onClick={switchCamera} variant='outline' size='icon'><SwitchCamera className='w-4 h-4' /></Button>
             <Subtitles className='absolute p-8 pointer-events-none' text={content} />
             <video ref={videoRef} muted className='w-full h-full' controls={false} playsInline style={{ objectFit: 'cover' }} />
             <div className='absolute bottom-10 w-full flex justify-center'>
