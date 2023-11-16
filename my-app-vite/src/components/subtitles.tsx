@@ -33,12 +33,13 @@ const Subtitles = memo(({ className, text }: SubtitlesProps) => {
 
     return <div className={className}>
         {text}
-        <Separator />
+        <Separator className='my-4' />
         {words.map(({ type, value }) => {
             return <div key={value}>
                 {type}: {value}
             </div>
         })}
+        <div className='p-8 mt-8 rounded bg-slate-100 text-xl font-bold text-center text-primary'>Back to camera.</div>
     </div>
 })
 
