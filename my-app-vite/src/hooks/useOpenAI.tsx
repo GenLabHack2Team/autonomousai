@@ -5,9 +5,10 @@ import prompts from '@/lib/prompts.json'
 
 type UseOpenAIProps = {
     language: Language
+    mode: Mode
 }
 
-const useOpenAI = ({ language }: UseOpenAIProps) => {
+const useOpenAI = ({ language, mode }: UseOpenAIProps) => {
     const { apiKey } = useAppContext()
     const openaiRef = useRef<OpenAI>(new OpenAI({
         apiKey: apiKey,
@@ -43,7 +44,7 @@ const useOpenAI = ({ language }: UseOpenAIProps) => {
                 },
                 {
                     role: "system", // https://community.openai.com/t/the-system-role-how-it-influences-the-chat-behavior/87353/8
-                    content: prompts[language]
+                    content: prompts[mode ?? 'long'][language]
                 },
             ],
         });

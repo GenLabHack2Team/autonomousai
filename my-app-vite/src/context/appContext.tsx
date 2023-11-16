@@ -8,6 +8,8 @@ interface Value {
     setPage: React.Dispatch<React.SetStateAction<number>>
     selectedLanguage: Language,
     setSelectedLanguage: React.Dispatch<React.SetStateAction<Language>>
+    selectedMode: Mode,
+    setSelectedMode: React.Dispatch<React.SetStateAction<Mode>>
 }
 
 const AppContext = createContext<Value | null>(null);
@@ -15,7 +17,8 @@ const AppContext = createContext<Value | null>(null);
 export const ContextProvider = ({ children }: { children: React.ReactNode }) => {
     const [page, setPage] = useState<number>(0);
     const [apiKey, setApiKey] = useState<string>("");
-    const [selectedLanguage, setSelectedLanguage] = useState<Language>('')
+    const [selectedLanguage, setSelectedLanguage] = useState<Language>('english')
+    const [selectedMode, setSelectedMode] = useState<Mode>('long')
 
     const value = {
         apiKey,
@@ -23,7 +26,9 @@ export const ContextProvider = ({ children }: { children: React.ReactNode }) => 
         page,
         setPage,
         selectedLanguage,
-        setSelectedLanguage
+        setSelectedLanguage,
+        selectedMode,
+        setSelectedMode
     }
 
     return (
