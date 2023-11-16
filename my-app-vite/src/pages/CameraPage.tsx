@@ -1,8 +1,8 @@
 import { Button } from '@/components/ui/button';
 import { CameraIcon } from 'lucide-react';
 import React, { useState, useRef, useEffect } from 'react';
-import { vision, speech } from '@/lib/openai'
-import { playAudio } from '@/lib/audio'
+import { useOpenAI } from '@/hooks/useOpenAI';
+import { playAudio } from '@/lib/utils'
 import { blobToBase64 } from '@/lib/utils';
 
 const CameraComponent: React.FC = () => {
@@ -11,6 +11,7 @@ const CameraComponent: React.FC = () => {
     const [isRecording, setIsRecording] = useState(false);
     const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
     let pressTimer: ReturnType<typeof setTimeout>;
+    const { vision, speech } = useOpenAI({ language: 'english' })
 
     useEffect(() => {
         // Request access to the camera
