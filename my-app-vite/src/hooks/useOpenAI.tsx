@@ -4,7 +4,7 @@ import { useRef, useEffect } from "react";
 import prompts from '@/lib/prompts.json'
 
 type UseOpenAIProps = {
-    language: "english" | "spanish" | "japanese"
+    language: Language
 }
 
 const useOpenAI = ({ language }: UseOpenAIProps) => {
@@ -22,6 +22,9 @@ const useOpenAI = ({ language }: UseOpenAIProps) => {
     }, [apiKey]);
 
     async function vision(base64Image: string) {
+        if (language === "") {
+            throw new Error('Language is not selected.')
+        };
         const response = await openaiRef.current.chat.completions.create({
             model: "gpt-4-vision-preview",
             max_tokens: 1024,

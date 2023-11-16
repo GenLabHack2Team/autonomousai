@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { useAppContext } from "@/context/appContext"
+import { LanguageSelector } from "@/components/language-selector"
 
 const FormSchema = z.object({
     apiKey: z.string().min(2, {
@@ -36,7 +37,8 @@ function KeyPage() {
 
     return (
         <div className="w-full min-h-screen flex flex-col justify-center items-center p-8">
-            <div className="text-2xl font-bold pb-10">TRANSLATEO</div>
+            <div className="text-2xl font-bold pb-8">TRANSLATEO</div>
+            <div className="mb-8"><LanguageSelector /></div>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="md:w-2/3 space-y-6">
                     <FormField

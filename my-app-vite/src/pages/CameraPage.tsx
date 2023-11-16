@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useOpenAI } from '@/hooks/useOpenAI';
 import { playAudio } from '@/lib/utils'
 import { blobToBase64 } from '@/lib/utils';
+import { useAppContext } from '@/context/appContext';
 
 const CameraComponent: React.FC = () => {
     const videoRef = useRef<HTMLVideoElement>(null);
@@ -11,7 +12,8 @@ const CameraComponent: React.FC = () => {
     const [isRecording, setIsRecording] = useState(false);
     const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
     let pressTimer: ReturnType<typeof setTimeout>;
-    const { vision, speech } = useOpenAI({ language: 'english' })
+    const { selectedLanguage } = useAppContext()
+    const { vision, speech } = useOpenAI({ language: selectedLanguage })
 
     useEffect(() => {
         // Request access to the camera

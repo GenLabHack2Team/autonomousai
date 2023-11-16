@@ -6,6 +6,8 @@ interface Value {
     setApiKey: React.Dispatch<React.SetStateAction<string>>
     page: number
     setPage: React.Dispatch<React.SetStateAction<number>>
+    selectedLanguage: Language,
+    setSelectedLanguage: React.Dispatch<React.SetStateAction<Language>>
 }
 
 const AppContext = createContext<Value | null>(null);
@@ -13,12 +15,15 @@ const AppContext = createContext<Value | null>(null);
 export const ContextProvider = ({ children }: { children: React.ReactNode }) => {
     const [page, setPage] = useState<number>(0);
     const [apiKey, setApiKey] = useState<string>("");
+    const [selectedLanguage, setSelectedLanguage] = useState<Language>('')
 
     const value = {
         apiKey,
         setApiKey,
         page,
-        setPage
+        setPage,
+        selectedLanguage,
+        setSelectedLanguage
     }
 
     return (
