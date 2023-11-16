@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef } from 'react';
 import { useOpenAI } from '@/hooks/useOpenAI';
 import { playAudio } from '@/lib/utils'
 import { blobToBase64 } from '@/lib/utils';
