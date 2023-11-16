@@ -20,6 +20,14 @@ const FormSchema = z.object({
     }),
 })
 
+type FormValues = {
+    apiKey: string;
+};
+
+const defaultValues: FormValues = {
+    apiKey: localStorage.getItem("apiKey") ?? ""
+}
+
 type KeyFormProps = {
     className?: string
 }
@@ -29,6 +37,7 @@ const KeyForm = ({ className }: KeyFormProps) => {
 
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
+        defaultValues
     })
 
     function onSubmit(data: z.infer<typeof FormSchema>) {
